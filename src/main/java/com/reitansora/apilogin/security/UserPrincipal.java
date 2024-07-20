@@ -13,6 +13,7 @@ import java.util.List;
 public class UserPrincipal implements UserDetails {
 
     private final Long userId;
+    private final String username;
     private final String email;
     private final String password;
 
@@ -21,15 +22,6 @@ public class UserPrincipal implements UserDetails {
         return List.of();
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -2,6 +2,7 @@ package com.reitansora.apilogin.controller;
 
 import com.reitansora.apilogin.model.LoginRequest;
 import com.reitansora.apilogin.model.LoginResponse;
+import com.reitansora.apilogin.model.UserResponse;
 import com.reitansora.apilogin.security.JWTIssuer;
 import com.reitansora.apilogin.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -29,19 +30,23 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         var principal = (UserPrincipal) authentication.getPrincipal();
-
         var roles = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail());
+        var token = jwtIssuer.issue(principal.getUserId(), principal.getUsername(), principal.getEmail());
         return LoginResponse.builder()
                 .accessToken(token)
                 .build();
     }
 
     @GetMapping("/secured")
-    public boolean secured(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return true;
+    public UserResponse secured(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return UserResponse.builder()
+                .id(userPrincipal.getUserId())
+                .username(userPrincipal.getUsername())
+                .email(userPrincipal.getEmail())
+                .password("")
+                .build();
     }
 }

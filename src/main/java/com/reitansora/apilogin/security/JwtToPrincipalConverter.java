@@ -1,7 +1,6 @@
 package com.reitansora.apilogin.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.apache.catalina.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +11,9 @@ public class JwtToPrincipalConverter {
     public UserPrincipal convert(DecodedJWT decodedJWT) {
         return UserPrincipal.builder()
                 .userId(Long.valueOf(decodedJWT.getSubject()))
+                .username(decodedJWT.getClaim("nickname").asString())
                 .email(decodedJWT.getClaim("email").asString())
                 .build();
-
-
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(DecodedJWT decodedJWT) {

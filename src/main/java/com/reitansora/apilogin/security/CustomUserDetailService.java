@@ -18,9 +18,9 @@ public class CustomUserDetailService implements UserDetailsService {
         var user = userService.findByEmail(username).orElseThrow();
         return UserPrincipal.builder()
                 .userId(user.getUser_id())
+                .username(user.getUser_nickname())
                 .email(user.getUser_email())
                 .password(user.getUser_password())
                 .build();
-
     }
 }
