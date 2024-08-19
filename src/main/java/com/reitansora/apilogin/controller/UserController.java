@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/edit/{id}")
-    public boolean updateUser(@RequestBody UserEntity user, @PathVariable("id") long id){
+    public boolean updateUser(@RequestBody UserEntity user, @PathVariable("id") String id){
         try {
             this.userService.updateUser(user,id);
             return true;
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public boolean deleteUser(@PathVariable("id") long id){
+    public boolean deleteUser(@PathVariable("id") String id){
         try {
             this.userService.deleteUser(id);
             return true;

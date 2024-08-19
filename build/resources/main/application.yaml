@@ -5,10 +5,18 @@ security:
 spring:
   datasource:
     url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
   application:
     name: api_login
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      .hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        default_schema: capiplan
+
+
+
 
 

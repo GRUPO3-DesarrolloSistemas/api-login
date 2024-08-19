@@ -34,7 +34,7 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        var token = jwtIssuer.issue(principal.getUserId(), principal.getUsername(), principal.getEmail());
+        var token = jwtIssuer.issue(principal.getEncryptedUserId(), principal.getUsername(), principal.getEmail(), principal.getCreatedAt());
         return LoginResponse.builder()
                 .accessToken(token)
                 .build();
@@ -43,10 +43,11 @@ public class AuthController {
     @GetMapping("/secured")
     public UserResponse secured(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return UserResponse.builder()
-                .id(userPrincipal.getUserId())
+                .userId(userPrincipal.getEncryptedUserId())
                 .username(userPrincipal.getUsername())
                 .email(userPrincipal.getEmail())
                 .password("")
+                .createdAt(userPrincipal.getCreatedAt())
                 .build();
     }
 }

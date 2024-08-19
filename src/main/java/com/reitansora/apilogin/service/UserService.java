@@ -55,9 +55,9 @@ public class UserService {
         }
     }
 
-    public void updateUser(UserEntity userRequest, Long id) throws EmailUsed, UserNotFound, ValidationFailed {
-        if (userRepository.findById(id).isPresent()){
-            UserEntity userEntity = userRepository.findById(id).get();
+    public void updateUser(UserEntity userRequest, String request_id) throws EmailUsed, UserNotFound, ValidationFailed {
+        if (userRepository.findById(userRepository.findBy_id(request_id).get()).isPresent()){
+            UserEntity userEntity = userRepository.findById(userRepository.findBy_id(request_id).get()).get();
             if (userRepository.findByEmail(userRequest.getUser_email()).isEmpty()) {
                 if (userValidation.EmailValidator(userRequest.getUser_email()) && userValidation.PasswordValidator(userRequest.getUser_password())){
                     userEntity.setUser_nickname(userRequest.getUser_nickname());
@@ -70,7 +70,7 @@ public class UserService {
                     throw new ValidationFailed();
                 }
             } else {
-                if(id == userRepository.findByEmail(userRequest.getUser_email()).get().getUser_id()){
+                if(userRepository.findBy_id(request_id).get() == userRepository.findByEmail(userRequest.getUser_email()).get().getId()){
                     if (userValidation.EmailValidator(userRequest.getUser_email()) && userValidation.PasswordValidator(userRequest.getUser_password())){
                         userEntity.setUser_nickname(userRequest.getUser_nickname());
                         userEntity.setUser_email(userRequest.getUser_email());
@@ -86,13 +86,13 @@ public class UserService {
                 }
             }
         } else {
-            throw new UserNotFound(id);
+            throw new UserNotFound(request_id);
         }
     }
 
-    public void deleteUser(Long id) throws UserNotFound {
-        if (userRepository.findById(id).isPresent()){
-            userRepository.deleteById(id);
+    public void deleteUser(String id) throws UserNotFound {
+        if (userRepository.findById(userRepository.findBy_id(id).get()).isPresent()){
+            userRepository.deleteById(userRepository.findBy_id(id).get());
         }else{
             throw new UserNotFound(id);
         }

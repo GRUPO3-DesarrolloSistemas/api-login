@@ -13,9 +13,11 @@ import java.util.List;
 public class UserPrincipal implements UserDetails {
 
     private final Long userId;
+    private final String encryptedUserId;
     private final String username;
     private final String email;
     private final String password;
+    private final String createdAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

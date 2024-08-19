@@ -17,10 +17,12 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userService.findByEmail(username).orElseThrow();
         return UserPrincipal.builder()
-                .userId(user.getUser_id())
+                .userId(user.getId())
+                .encryptedUserId(user.getUser_id())
                 .username(user.getUser_nickname())
                 .email(user.getUser_email())
                 .password(user.getUser_password())
+                .createdAt(user.getCreated_at().toString())
                 .build();
     }
 }

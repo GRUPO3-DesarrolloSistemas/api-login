@@ -10,9 +10,10 @@ import java.util.List;
 public class JwtToPrincipalConverter {
     public UserPrincipal convert(DecodedJWT decodedJWT) {
         return UserPrincipal.builder()
-                .userId(Long.valueOf(decodedJWT.getSubject()))
+                .encryptedUserId(String.valueOf(decodedJWT.getSubject()))
                 .username(decodedJWT.getClaim("nickname").asString())
                 .email(decodedJWT.getClaim("email").asString())
+                .createdAt(decodedJWT.getClaim("createdAt").asString())
                 .build();
     }
 

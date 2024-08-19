@@ -15,12 +15,13 @@ public class JWTIssuer {
 
     private final JwtProperties properties;
 
-    public String issue(long userId, String nickname,String email){
+    public String issue(String encryptedUserId, String nickname,String email, String createdAt){
         return JWT.create()
-                .withSubject(String.valueOf(userId))
+                .withSubject(String.valueOf(encryptedUserId))
                 .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.DAYS)))
                 .withClaim("nickname", nickname)
                 .withClaim("email", email)
+                .withClaim("createdAt", createdAt)
                 .sign(Algorithm.HMAC256(properties.getSecretKey()));
     }
 }
